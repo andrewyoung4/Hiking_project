@@ -1,30 +1,40 @@
 const Hike = require("./../models/hikeModel");
 
-exports.getAllHikes = (req, res) => {
-  console.log(req.requestTime);
+exports.getAllHikes = async (req, res) => {
+  try {
+    const hikes = await Hike.find();
 
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestTime
-    // results: hikes.length,
-    // data: {
-    //   tours
-    // }
-  });
+    res.status(200).json({
+      status: "success",
+      results: hikes.length,
+      data: {
+        hikes
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err
+    });
+  }
 };
 
-exports.getHike = (req, res) => {
-  console.log(req.params);
-  const id = req.params.id * 1;
+exports.getHike = async (req, res) => {
+  try {
+    const hike = await Hike.findById(req.params.id);
 
-  // const tour = tours.find((el) => el.id === id);
-
-  // res.status(200).json({
-  //   status: "success",
-  //   data: {
-  //     tour
-  //   }
-  // });
+    res.status(200).json({
+      status: "success",
+      data: {
+        hike
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err
+    });
+  }
 };
 
 exports.createHike = async (req, res) => {
@@ -46,13 +56,26 @@ exports.createHike = async (req, res) => {
   }
 };
 
-exports.updateHike = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    data: {
-      tour: "<Updated tour here...>"
-    }
-  });
+exports.updateHike = async (req, res) => {
+  try {
+    // new: true - this makes sure we get the updated item back
+    const hike = await Hike.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        hike
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err
+    });
+  }
 };
 
 exports.deleteHike = (req, res) => {
