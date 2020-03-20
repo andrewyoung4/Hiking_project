@@ -2,8 +2,31 @@ const Hike = require("./../models/hikeModel");
 
 exports.getAllHikes = async (req, res) => {
   try {
-    const hikes = await Hike.find();
+    // req.query - express parses the query string into an easy to use object
+    // This creates a hard copy of the req.query. This allows us to change queryObj without changing req.query
+    const queryObj = { ...req.query };
 
+    console.log(req.query);
+
+    // Build Query
+    // 1) Filtering - localhost:3000/api/v1/hikes?difficulty=hard
+    const excludeTheseFields = ["page", "sort", "limit", "fields"];
+    excludeTheseFields.forEach((el) => delete queryObj[el]);
+
+    // 2) Advanced Filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
+    // console.log(queryStr);
+    console.log(JSON.parse(queryStr));
+
+    const query = Hike.find(queryStr);
+    // const query = Hike.find(JSON.parse(queryStr));
+
+    // Execute Query
+    const hikes = await query;
+
+    // Send Response
     res.status(200).json({
       status: "success",
       results: hikes.length,
@@ -92,5 +115,4 @@ exports.deleteHike = async (req, res) => {
       message: err
     });
   }
-
 };
