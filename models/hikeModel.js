@@ -7,9 +7,13 @@ const hikeSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
-  hikeTime: {
-    type: { Number, Number },
-    required: [true, "A hike must have a time"]
+  hours: {
+    type: Number,
+    default: 1
+  },
+  minutes: {
+    type: Number,
+    default: 40
   },
   difficulty: {
     type: String,
@@ -40,7 +44,9 @@ const hikeSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
+    // Makes it so this is not returned to the use
+    select: false
   }
 });
 
