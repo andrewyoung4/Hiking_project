@@ -1,5 +1,25 @@
 const Hike = require("./../models/hikeModel");
 
+exports.aliasHikesUnderHour = async (req, res) => {
+  try {
+    const hikesUnderHour = await Hike.find({ hours: 0 });
+    // const hikesUnderHour = await Hike.find();
+
+    res.status(200).json({
+      status: "success",
+      results: hikesUnderHour.length,
+      data: {
+        hikesUnderHour
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err
+    });
+  }
+};
+
 exports.getAllHikes = async (req, res) => {
   try {
     // req.query - express parses the query string into an easy to use object
@@ -9,19 +29,47 @@ exports.getAllHikes = async (req, res) => {
     console.log(req.query);
 
     // Build Query
-    // 1) Filtering - localhost:3000/api/v1/hikes?difficulty=hard
+    // 1A) Filtering - localhost:3000/api/v1/hikes?difficulty=hard
     const excludeTheseFields = ["page", "sort", "limit", "fields"];
     excludeTheseFields.forEach((el) => delete queryObj[el]);
 
-    // 2) Advanced Filtering
+    // 1B) Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    // console.log(queryStr);
-    console.log(JSON.parse(queryStr));
+    // Hike.find returns a query
+    // We are saving it in the query variable so we can chain more methods to it
+    let query = Hike.find(JSON.parse(queryStr));
 
-    const query = Hike.find(queryStr);
-    // const query = Hike.find(JSON.parse(queryStr));
+    // 2) Sorting
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort("createdAt");
+    }
+
+    // 3) Field limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      query = query.select(fields);
+      // query = query.select('name ratingAverage difficulty');
+    } else {
+      query = query.select("-__v");
+    }
+
+    // 4) Pagination
+    // Converts string to number
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numHikes = await Hike.countDocuments();
+      if (skip >= numHikes) throw new Error("This page does not exist");
+    }
 
     // Execute Query
     const hikes = await query;

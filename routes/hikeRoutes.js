@@ -3,6 +3,8 @@ const hikeController = require("../controllers/hikeController");
 
 const router = express.Router();
 
+router.route("/hikes-under-hour").get(hikeController.aliasHikesUnderHour);
+
 router
   .route("/")
   .get(hikeController.getAllHikes)
