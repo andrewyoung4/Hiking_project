@@ -1,6 +1,6 @@
 const Hike = require("./../models/hikeModel");
 
-exports.aliasHikesUnderHour = async (req, res) => {
+exports.hikesUnderHour = async (req, res) => {
   try {
     const hikesUnderHour = await Hike.find({ hours: 0 });
     // const hikesUnderHour = await Hike.find();
