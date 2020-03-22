@@ -37,10 +37,11 @@ const hikeSchema = new mongoose.Schema({
   },
   imageCover: {
     type: String,
-    required: [true, "Needs a cover image"]
+    default: "update cover image file name"
   },
   images: {
-    type: [String]
+    type: [String],
+    default: ["update image file name"]
   },
   createdAt: {
     type: Date,
