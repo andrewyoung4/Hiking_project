@@ -76,6 +76,7 @@ exports.getHike = async (req, res) => {
 };
 
 exports.createHike = async (req, res) => {
+  console.log(req.body);
   try {
     const newHike = await Hike.create(req.body);
 
@@ -159,7 +160,9 @@ exports.getHikeStats = async (req, res) => {
       // {
       //   $match: {
       //     // Not Equal - removes easy group
-      //     _id: { $ne: "EASY" }
+      //     // _id: { $ne: "EASY" }
+      //     // Equal - gives only easy group
+      //     _id: { $eq: "EASY" }
       //   }
       // }
     ]);
