@@ -95,6 +95,26 @@ exports.createHike = async (req, res) => {
   }
 };
 
+exports.createHikeMany = async (req, res) => {
+  console.log(req.body);
+  try {
+    const newHike = await Hike.insertMany(req.body.hikeArray);
+
+    // console.log(req.body);
+    res.status(201).json({
+      status: "success",
+      data: {
+        hike: newHike
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err
+    });
+  }
+};
+
 exports.updateHike = async (req, res) => {
   try {
     // new: true - this makes sure we get the updated item back

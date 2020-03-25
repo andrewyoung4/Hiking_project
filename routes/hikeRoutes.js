@@ -11,6 +11,8 @@ router
   .get(hikeController.getAllHikes)
   .post(hikeController.createHike);
 
+router.route("/many").post(hikeController.createHikeMany);
+
 router
   .route("/:id")
   .get(hikeController.getHike)
