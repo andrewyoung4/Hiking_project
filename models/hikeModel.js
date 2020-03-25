@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const hikeSchema = new mongoose.Schema({
   name: {
@@ -6,6 +7,9 @@ const hikeSchema = new mongoose.Schema({
     required: [true, "A hike must have a name"],
     unique: true,
     trim: true
+  },
+  slug: {
+    type: String
   },
   hours: {
     type: Number,
@@ -49,6 +53,12 @@ const hikeSchema = new mongoose.Schema({
     // Makes it so this is not returned to the use
     select: false
   }
+});
+
+// Document Middleware: runs before .save() and .create()
+hikeSchema.pre("save", function(next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 const Hike = mongoose.model("Hike", hikeSchema);
