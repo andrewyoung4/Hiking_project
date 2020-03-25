@@ -21,11 +21,19 @@ const hikeSchema = new mongoose.Schema({
   },
   difficulty: {
     type: String,
-    required: [true, "Needs a difficulty"]
+    required: [true, "Needs a difficulty"],
+    // only for strings
+    enum: {
+      values: ["easy", "medium", "hard"],
+      message: "Difficulty is either: easy, medium, or hard"
+    },
+    trim: true
   },
   ratingAverage: {
     type: Number,
-    default: 4.5
+    default: 4.5,
+    min: [1, "Rating must be equal to or above 1.0"],
+    max: [5, "Rating must be equal to or below 5.0"]
   },
   ratingQuantity: {
     type: Number,
@@ -52,12 +60,30 @@ const hikeSchema = new mongoose.Schema({
     default: Date.now(),
     // Makes it so this is not returned to the use
     select: false
+  },
+  activeUserHike: {
+    type: Boolean,
+    default: false
   }
 });
 
 // Document Middleware: runs before .save() and .create()
 hikeSchema.pre("save", function(next) {
+  //this is used for front end routing
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// Query Middleware - any strings that start with find
+hikeSchema.pre(/^find/, function(next) {
+  // hikeSchema.pre("find", function(next) {
+  this.find({ activeUserHike: { $ne: true } });
+  next();
+});
+
+// Aggregation Middleware
+hikeSchema.pre("aggregate", function(next) {
+  this.pipeline().unshift({ $match: { activeUserHike: { $ne: true } } });
   next();
 });
 
