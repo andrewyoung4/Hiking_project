@@ -23,16 +23,39 @@ axios.get("https://www.wildlandtrekking.com/blog/").then(function(response) {
         .children("a")
         .text();
 
+      const howHard = getDifficulty();
+
       results.push({
         imageCover: "https://www.wildlandtrekking.com" + img,
         // link: link,
         name: name,
-        difficulty: "medium"
+        difficulty: howHard
       });
     });
+    // console.log(results);
     callMe(results);
   });
 });
+
+function getDifficulty() {
+  let returnThis;
+  const thisNum = Math.floor(Math.random() * Math.floor(3));
+  switch (thisNum) {
+    case 0:
+      returnThis = "easy";
+      break;
+    case 1:
+      returnThis = "medium";
+      break;
+    case 2:
+      returnThis = "hard";
+      break;
+
+    default:
+      break;
+  }
+  return returnThis;
+}
 
 function callMe(postThis) {
   axios
