@@ -20,6 +20,7 @@
   },
   "scripts": {
     "start-nodemon": "./node_modules/.bin/nodemon server.js",
+    "debug": "ndb server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "ndb": "^1.1.5"
   }
 }
