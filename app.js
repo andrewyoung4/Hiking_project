@@ -2,8 +2,8 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const hikeRouter = require("./routes/hikeRoutes");
-const userRouter = require("./routes/userRoutes");
+const hikeRouter = require("../Hiking_project/routes/hikeRoutes");
+const userRouter = require("../Hiking_project/routes/userRoutes");
 
 const app = express();
 

@@ -1,20 +1,33 @@
 {
-  "name": "project3",
-  "version": "0.1.0",
-  "private": true,
+  "name": "hiking_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "start": "node ./bin/server.js",
+    "server": "babel-watch ./bin/server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\" "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
+    "concurrently": "^5.1.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.9.5",
-    "morgan": "^1.9.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.6",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.2",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "slugify": "^1.4.0",
     "validator": "^13.0.0"
   },
@@ -42,6 +55,10 @@
     ]
   },
   "devDependencies": {
-    "ndb": "^1.1.5"
+    "ndb": "^1.1.5",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-watch": "^7.0.0"
   }
 }
