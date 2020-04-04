@@ -30,7 +30,7 @@ class Navbar extends Component {
                     <NavLink className="nav-link" to="/dashboard">DASHBOARD</NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink className="nav-link" to="/about">ABOUT</NavLink>
+                    <NavLink className="nav-link" to="/about">SAVED</NavLink>
                   </li>
               </ul>
               <ul className="navbar-nav ml-auto mt-2 mt-lg-0">

@@ -7,11 +7,10 @@ import { Provider } from "react-redux";
 import Navbar from "./containers/navbar/Navbar";
 import Home from "./components/home/Home";
 import About from "./components/about/About";
-import Footer from "./components/footer/Footer";
 import Register from "./containers/register/Register";
 import Login from "./containers/login/Login";
 import DashBoard from "./containers/dashboard/Dashboard";
-
+import Footer from "./components/footer/Footer"
 import Store from "./store";
 
 class App extends Component {
